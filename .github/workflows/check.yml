@@ -1,0 +1,36 @@
+name: 연결 확인
+
+# 아무것도 올리지 않고, 각 계정 열쇠가 제대로 동작하는지만 확인해요.
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 연결 확인
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          THREADS_TOKEN: ${{ secrets.THREADS_TOKEN }}
+        run: |
+          ok=0
+          if [ -n "$YT_REFRESH_TOKEN" ]; then
+            curl -fsS https://oauth2.googleapis.com/token -d client_id="$YT_CLIENT_ID" -d client_secret="$YT_CLIENT_SECRET" \
+              -d refresh_token="$YT_REFRESH_TOKEN" -d grant_type=refresh_token >/dev/null && echo "유튜브: 연결됨" || { echo "유튜브: 실패"; ok=1; }
+          else echo "유튜브: 아직 없음"; fi
+          if [ -n "$IG_TOKEN" ]; then
+            r=$(curl -sS "https://graph.instagram.com/me?fields=user_id,username&access_token=$IG_TOKEN")
+            echo "인스타: $r" | sed 's/"access_token[^,}]*//'
+            echo "$r" | grep -q "\"user_id\":\"$IG_USER_ID\"" && echo "인스타: 계정 ID 일치" || { echo "인스타: 계정 ID 불일치 또는 실패"; ok=1; }
+          else echo "인스타: 아직 없음"; fi
+          if [ -n "$THREADS_TOKEN" ]; then
+            r=$(curl -sS "https://graph.threads.net/v1.0/me?fields=id,username&access_token=$THREADS_TOKEN")
+            echo "스레드: $r"
+            echo "$r" | grep -q "\"id\":\"$THREADS_USER_ID\"" && echo "스레드: 계정 ID 일치" || { echo "스레드: 계정 ID 불일치 또는 실패"; ok=1; }
+          else echo "스레드: 아직 없음"; fi
+          exit $ok
