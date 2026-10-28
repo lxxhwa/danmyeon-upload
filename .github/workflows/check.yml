@@ -31,6 +31,6 @@ jobs:
           if [ -n "$THREADS_TOKEN" ]; then
             r=$(curl -sS "https://graph.threads.net/v1.0/me?fields=id,username&access_token=$THREADS_TOKEN")
             echo "스레드: $r"
-            echo "$r" | grep -q "\"id\":\"$THREADS_USER_ID\"" && echo "스레드: 계정 ID 일치" || { echo "스레드: 계정 ID 불일치 또는 실패"; ok=1; }
+            echo "$r" | grep -q '"username"' && echo "스레드: 연결됨" || { echo "스레드: 실패"; ok=1; }
           else echo "스레드: 아직 없음"; fi
           exit $ok

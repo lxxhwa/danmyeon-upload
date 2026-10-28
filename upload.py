@@ -123,7 +123,7 @@ def instagram(item, copy):
 
 def threads(item, copy):
     base = "https://graph.threads.net/v1.0"
-    uid, tok = os.environ["THREADS_USER_ID"], os.environ["THREADS_TOKEN"]
+    uid, tok = os.environ.get("THREADS_USER_ID") or "me", os.environ["THREADS_TOKEN"]
     cid = check(requests.post(f"{base}/{uid}/threads", data={
         "media_type": "VIDEO",
         "video_url": public_video_url(item),
