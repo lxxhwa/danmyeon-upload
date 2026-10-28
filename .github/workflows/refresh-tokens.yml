@@ -1,0 +1,24 @@
+name: 인스타·스레드 토큰 연장
+
+# 인스타·스레드 토큰은 60일이면 만료돼요. 매주 일요일에 연장해서 저장소 비밀값을 바꿔 둬요.
+on:
+  schedule:
+    - cron: "0 0 * * 0"
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 토큰 연장
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          THREADS_TOKEN: ${{ secrets.THREADS_TOKEN }}
+        run: |
+          set -euo pipefail
+          ig=$(curl -fsS "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=$IG_TOKEN" | jq -r .access_token)
+          th=$(curl -fsS "https://graph.threads.net/refresh_access_token?grant_type=th_refresh_token&access_token=$THREADS_TOKEN" | jq -r .access_token)
+          gh secret set IG_TOKEN --repo "$GITHUB_REPOSITORY" --body "$ig"
+          gh secret set THREADS_TOKEN --repo "$GITHUB_REPOSITORY" --body "$th"
+          echo "두 토큰 모두 연장했어요."

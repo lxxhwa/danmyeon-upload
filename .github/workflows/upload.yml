@@ -1,0 +1,48 @@
+name: 업로드
+
+on:
+  schedule:
+    # 월·수·금 18:00 KST (= 09:00 UTC). 깃허브 사정으로 몇 분~수십 분 늦을 수 있어요.
+    - cron: "0 9 * * 1,3,5"
+  workflow_dispatch:
+    inputs:
+      platforms:
+        description: "올릴 곳 (쉼표로 구분)"
+        default: "youtube,instagram,threads"
+      yt_privacy:
+        description: "유튜브 공개 범위 (public / unlisted / private)"
+        default: "public"
+
+permissions:
+  contents: write
+
+concurrency: upload
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: 다음 편 올리기
+        env:
+          PLATFORMS: ${{ inputs.platforms || 'youtube,instagram,threads' }}
+          YT_PRIVACY: ${{ inputs.yt_privacy || 'public' }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          THREADS_TOKEN: ${{ secrets.THREADS_TOKEN }}
+        run: python upload.py
+      - name: 올린 기록 저장
+        if: always()
+        run: |
+          git config user.name "upload-bot"
+          git config user.email "upload-bot@users.noreply.github.com"
+          git add posted.json || true
+          git diff --cached --quiet || (git commit -m "업로드 기록" && git push)
