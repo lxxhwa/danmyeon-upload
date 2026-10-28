@@ -16,6 +16,8 @@ ROOT = Path(__file__).parent
 QUEUE = ROOT / "queue"
 STATE = ROOT / "posted.json"
 PLATFORMS = ["youtube", "instagram", "threads"]
+# 대기 중인 편이 이만큼 이상이면 매일, 아니면 월·수·금에만 올린다.
+DAILY_FROM = int(os.environ.get("DAILY_FROM", "7"))
 AI_NOTE = "\n\n🤖 AI로 만든 영상이에요."
 
 
@@ -147,6 +149,12 @@ def main():
     if not item:
         print("올릴 영상이 없어요. queue/ 에 다음 편을 넣어 주세요.")
         return 0
+    waiting = sum(1 for d in items if any(p not in state.get(d.name, {}) for p in wanted))
+    today = time.gmtime(time.time() + 9 * 3600).tm_wday  # 한국 시간 요일, 월=0
+    if os.environ.get("SCHEDULED") == "true" and today not in (0, 2, 4) and waiting < DAILY_FROM:
+        print(f"오늘은 쉬는 날이에요. 대기 {waiting}편 (매일 올리기는 {DAILY_FROM}편부터)")
+        return 0
+    print(f"대기 중인 편: {waiting}편")
     copy = parse_copy(item / "upload_copy.md")
     print(f"이번 편: {item.name}")
     failed = False
