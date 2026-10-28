@@ -12,6 +12,10 @@ on:
       yt_privacy:
         description: "유튜브 공개 범위 (public / unlisted / private)"
         default: "public"
+      test:
+        description: "시험 업로드 (true면 올린 기록을 남기지 않아 나중에 정식으로 다시 올라가요)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -20,6 +24,8 @@ concurrency: upload
 
 jobs:
   upload:
+    # 예약 실행은 저장소 변수 AUTO_UPLOAD 가 true 일 때만 돌아요. 손으로 돌리는 건 언제나 돼요.
+    if: github.event_name == 'workflow_dispatch' || vars.AUTO_UPLOAD == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,6 +37,7 @@ jobs:
         env:
           PLATFORMS: ${{ inputs.platforms || 'youtube,instagram,threads' }}
           YT_PRIVACY: ${{ inputs.yt_privacy || 'public' }}
+          TEST_RUN: ${{ inputs.test && 'true' || 'false' }}
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
@@ -40,7 +47,7 @@ jobs:
           THREADS_TOKEN: ${{ secrets.THREADS_TOKEN }}
         run: python upload.py
       - name: 올린 기록 저장
-        if: always()
+        if: always() && !inputs.test
         run: |
           git config user.name "upload-bot"
           git config user.email "upload-bot@users.noreply.github.com"

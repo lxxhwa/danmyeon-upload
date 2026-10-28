@@ -24,6 +24,8 @@ def load_state():
 
 
 def save_state(state):
+    if os.environ.get("TEST_RUN") == "true":
+        return
     STATE.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n")
 
 
