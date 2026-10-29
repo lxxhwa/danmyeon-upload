@@ -25,8 +25,6 @@ concurrency: upload
 
 jobs:
   upload:
-    # 예약 실행은 저장소 변수 AUTO_UPLOAD 가 true 일 때만 돌아요. 손으로 돌리는 건 언제나 돼요.
-    if: github.event_name == 'workflow_dispatch' || vars.AUTO_UPLOAD == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -36,7 +34,9 @@ jobs:
       - run: pip install requests
       - name: 다음 편 올리기
         env:
-          PLATFORMS: ${{ inputs.platforms || 'youtube,instagram,threads' }}
+          # 유튜브는 구글 심사 통과 전엔 비공개로만 올라가서, 예약 실행에선 일단 뺐어요.
+          # 심사 통과 후 'youtube,instagram,threads' 로 바꾸면 돼요.
+          PLATFORMS: ${{ inputs.platforms || 'instagram,threads' }}
           YT_PRIVACY: ${{ inputs.yt_privacy || 'public' }}
           SCHEDULED: ${{ github.event_name == 'schedule' }}
           TEST_RUN: ${{ inputs.test && 'true' || 'false' }}
