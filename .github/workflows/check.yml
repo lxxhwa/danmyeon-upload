@@ -17,6 +17,7 @@ jobs:
           IG_TOKEN: ${{ secrets.IG_TOKEN }}
           THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
           THREADS_TOKEN: ${{ secrets.THREADS_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           ok=0
           if [ -n "$YT_REFRESH_TOKEN" ]; then
@@ -33,4 +34,7 @@ jobs:
             echo "스레드: $r"
             echo "$r" | grep -q '"username"' && echo "스레드: 연결됨" || { echo "스레드: 실패"; ok=1; }
           else echo "스레드: 아직 없음"; fi
+          if [ -n "$GH_TOKEN" ]; then
+            gh secret list --repo "$GITHUB_REPOSITORY" >/dev/null && echo "토큰 연장 열쇠(GH_PAT): 연결됨" || { echo "토큰 연장 열쇠(GH_PAT): 권한 부족"; ok=1; }
+          else echo "토큰 연장 열쇠(GH_PAT): 아직 없음"; fi
           exit $ok
