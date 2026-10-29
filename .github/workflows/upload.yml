@@ -34,9 +34,7 @@ jobs:
       - run: pip install requests
       - name: 다음 편 올리기
         env:
-          # 유튜브는 구글 심사 통과 전엔 비공개로만 올라가서, 예약 실행에선 일단 뺐어요.
-          # 심사 통과 후 'youtube,instagram,threads' 로 바꾸면 돼요.
-          PLATFORMS: ${{ inputs.platforms || 'instagram,threads' }}
+          PLATFORMS: ${{ inputs.platforms || 'youtube,instagram,threads' }}
           YT_PRIVACY: ${{ inputs.yt_privacy || 'public' }}
           SCHEDULED: ${{ github.event_name == 'schedule' }}
           TEST_RUN: ${{ inputs.test && 'true' || 'false' }}
