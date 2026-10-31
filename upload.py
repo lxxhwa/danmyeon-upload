@@ -72,13 +72,21 @@ def youtube(item, copy):
         "refresh_token": os.environ["YT_REFRESH_TOKEN"],
         "grant_type": "refresh_token",
     }))["access_token"]
+    title = copy["yt_title"]
+    if "#shorts" not in title.lower():
+        title = f"{title} #shorts"
+    status = {
+        "privacyStatus": os.environ.get("YT_PRIVACY", "public"),
+        "selfDeclaredMadeForKids": False,
+        "containsSyntheticMedia": True,
+    }
+    # 예약 공개: 비공개로 미리 올려 두면 이 시각(UTC, 예: 2026-11-02T09:00:00Z)에 유튜브가 공개로 바꿔요.
+    if os.environ.get("YT_PUBLISH_AT"):
+        status["privacyStatus"] = "private"
+        status["publishAt"] = os.environ["YT_PUBLISH_AT"]
     meta = {
-        "snippet": {"title": copy["yt_title"][:100], "description": copy["yt_desc"], "categoryId": "27"},
-        "status": {
-            "privacyStatus": os.environ.get("YT_PRIVACY", "public"),
-            "selfDeclaredMadeForKids": False,
-            "containsSyntheticMedia": True,
-        },
+        "snippet": {"title": title[:100], "description": copy["yt_desc"], "categoryId": "27"},
+        "status": status,
     }
     video = (item / "video.mp4").read_bytes()
     init = requests.post(

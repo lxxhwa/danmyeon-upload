@@ -14,6 +14,9 @@ on:
       yt_privacy:
         description: "유튜브 공개 범위 (public / unlisted / private)"
         default: "public"
+      yt_publish_at:
+        description: "유튜브 예약 공개 시각 (UTC, 예: 2026-11-02T09:00:00Z). 비우면 바로 올려요"
+        default: ""
       test:
         description: "시험 업로드 (true면 올린 기록을 남기지 않아 나중에 정식으로 다시 올라가요)"
         type: boolean
@@ -37,6 +40,7 @@ jobs:
         env:
           PLATFORMS: ${{ inputs.platforms || 'instagram,threads' }}
           YT_PRIVACY: ${{ inputs.yt_privacy || 'public' }}
+          YT_PUBLISH_AT: ${{ inputs.yt_publish_at }}
           SCHEDULED: ${{ github.event_name == 'schedule' }}
           TEST_RUN: ${{ inputs.test && 'true' || 'false' }}
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
