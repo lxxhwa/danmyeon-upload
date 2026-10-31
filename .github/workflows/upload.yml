@@ -4,6 +4,7 @@ on:
   schedule:
     # 매일 18:00 KST (= 09:00 UTC)에 깨어나요. 대기 영상이 7편 미만이면 월·수·금에만 올리고,
     # 7편 이상 쌓이면 매일 올려요. 깃허브 사정으로 몇 분~수십 분 늦을 수 있어요.
+    # 예약 실행은 지금 인스타·스레드만 올려요. 자동 업로드한 유튜브 쇼츠가 쇼츠 피드에 안 떠서 유튜브는 잠시 직접 올려요(10/31).
     - cron: "0 9 * * *"
   workflow_dispatch:
     inputs:
@@ -34,7 +35,7 @@ jobs:
       - run: pip install requests
       - name: 다음 편 올리기
         env:
-          PLATFORMS: ${{ inputs.platforms || 'youtube,instagram,threads' }}
+          PLATFORMS: ${{ inputs.platforms || 'instagram,threads' }}
           YT_PRIVACY: ${{ inputs.yt_privacy || 'public' }}
           SCHEDULED: ${{ github.event_name == 'schedule' }}
           TEST_RUN: ${{ inputs.test && 'true' || 'false' }}

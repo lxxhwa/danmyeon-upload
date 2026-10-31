@@ -1,0 +1,25 @@
+name: 유튜브 상태 보기
+
+# 올린 영상의 공개 상태·제한 여부를 읽기만 해요. 아무것도 바꾸지 않아요.
+on:
+  workflow_dispatch:
+    inputs:
+      ids:
+        description: "영상 ID (쉼표로 구분)"
+        default: "hF1oAVk8su0,bvE2FVkG9bc"
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 상태 읽기
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          IDS: ${{ inputs.ids }}
+        run: |
+          tok=$(curl -fsS https://oauth2.googleapis.com/token -d client_id="$YT_CLIENT_ID" -d client_secret="$YT_CLIENT_SECRET" \
+            -d refresh_token="$YT_REFRESH_TOKEN" -d grant_type=refresh_token | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["access_token"]); print("scope:", d.get("scope"), file=sys.stderr)')
+          curl -sS -H "Authorization: Bearer $tok" "https://www.googleapis.com/youtube/v3/videos?part=snippet,status,contentDetails,statistics&id=$IDS"
+          for id in ${IDS//,/ }; do echo; echo "== $id"; curl -sS "https://www.youtube.com/oembed?url=https://www.youtube.com/shorts/$id&format=json"; echo; curl -sS -o /dev/null -w "shorts page: %{http_code} -> %{redirect_url}\n" "https://www.youtube.com/shorts/$id"; done
