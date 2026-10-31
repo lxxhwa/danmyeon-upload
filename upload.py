@@ -13,8 +13,9 @@ from pathlib import Path
 import requests
 
 ROOT = Path(__file__).parent
-QUEUE = ROOT / "queue"
-STATE = ROOT / "posted.json"
+# 채널마다 대기열과 기록을 따로 둬요. 단면도감은 queue/ + posted.json, 만약도감은 queue_manyak/ + posted_manyak.json.
+QUEUE = ROOT / os.environ.get("QUEUE_DIR", "queue")
+STATE = ROOT / os.environ.get("STATE_FILE", "posted.json")
 PLATFORMS = ["youtube", "instagram", "threads"]
 # 대기 중인 편이 이만큼 이상이면 매일, 아니면 월·수·금에만 올린다.
 DAILY_FROM = int(os.environ.get("DAILY_FROM", "7"))
@@ -55,7 +56,7 @@ def parse_copy(path):
 def public_video_url(item):
     repo = os.environ["GITHUB_REPOSITORY"]
     ref = os.environ.get("GITHUB_SHA", "main")
-    return f"https://raw.githubusercontent.com/{repo}/{ref}/queue/{item.name}/video.mp4"
+    return f"https://raw.githubusercontent.com/{repo}/{ref}/{QUEUE.name}/{item.name}/video.mp4"
 
 
 def check(resp):
@@ -81,9 +82,13 @@ def youtube(item, copy):
         "containsSyntheticMedia": True,
     }
     # 예약 공개: 비공개로 미리 올려 두면 이 시각(UTC, 예: 2026-11-02T09:00:00Z)에 유튜브가 공개로 바꿔요.
-    if os.environ.get("YT_PUBLISH_AT"):
+    publish_at = os.environ.get("YT_PUBLISH_AT")
+    # 바로 공개로 올리면 쇼츠 피드에 안 뜬 적이 있어서, 비공개로 올리고 몇 분 뒤 공개되게 예약할 수 있어요.
+    if not publish_at and os.environ.get("YT_PUBLISH_DELAY_MIN"):
+        publish_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 60 * int(os.environ["YT_PUBLISH_DELAY_MIN"])))
+    if publish_at:
         status["privacyStatus"] = "private"
-        status["publishAt"] = os.environ["YT_PUBLISH_AT"]
+        status["publishAt"] = publish_at
     meta = {
         "snippet": {"title": title[:100], "description": copy["yt_desc"], "categoryId": "27"},
         "status": status,

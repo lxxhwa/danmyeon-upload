@@ -1,0 +1,58 @@
+name: 업로드 (만약도감)
+
+# 만약도감 채널용이에요. 매일 18:00 KST에 queue_manyak/ 에서 안 올린 편 하나를 유튜브에 올려요.
+# 바로 공개하면 쇼츠 피드에 안 뜬 적이 있어서, 비공개로 올리고 10분 뒤 공개되게 예약해요.
+on:
+  schedule:
+    - cron: "0 9 * * *"
+  workflow_dispatch:
+    inputs:
+      platforms:
+        description: "올릴 곳 (쉼표로 구분)"
+        default: "youtube"
+      yt_publish_at:
+        description: "유튜브 예약 공개 시각 (UTC, 예: 2026-11-02T09:00:00Z). 비우면 10분 뒤 공개"
+        default: ""
+      test:
+        description: "시험 업로드 (true면 올린 기록을 남기지 않아요)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency: upload
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: 다음 편 올리기
+        env:
+          QUEUE_DIR: queue_manyak
+          STATE_FILE: posted_manyak.json
+          DAILY_FROM: "1"
+          PLATFORMS: ${{ inputs.platforms || 'youtube' }}
+          YT_PUBLISH_AT: ${{ inputs.yt_publish_at }}
+          YT_PUBLISH_DELAY_MIN: "10"
+          SCHEDULED: ${{ github.event_name == 'schedule' }}
+          TEST_RUN: ${{ inputs.test && 'true' || 'false' }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.MANYAK_YT_REFRESH_TOKEN }}
+        run: |
+          if [ -z "$YT_REFRESH_TOKEN" ]; then echo "만약도감 유튜브 열쇠(MANYAK_YT_REFRESH_TOKEN)가 아직 없어요."; exit 0; fi
+          python upload.py
+      - name: 올린 기록 저장
+        if: always() && !inputs.test
+        run: |
+          git config user.name "upload-bot"
+          git config user.email "upload-bot@users.noreply.github.com"
+          git pull -q --rebase origin main || true
+          git add posted_manyak.json || true
+          git diff --cached --quiet || (git commit -m "업로드 기록 (만약도감)" && git push)
