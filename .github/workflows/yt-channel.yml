@@ -1,0 +1,25 @@
+name: 유튜브 채널 확인
+
+# 각 유튜브 열쇠가 어느 채널 것인지 읽기만 해요. 아무것도 바꾸지 않아요.
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 채널 확인
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          DANMYEON: ${{ secrets.YT_REFRESH_TOKEN }}
+          MANYAK: ${{ secrets.MANYAK_YT_REFRESH_TOKEN }}
+        run: |
+          for name in DANMYEON MANYAK; do
+            rt="${!name}"; echo "== $name"
+            [ -z "$rt" ] && { echo "열쇠 없음"; continue; }
+            r=$(curl -sS https://oauth2.googleapis.com/token -d client_id="$YT_CLIENT_ID" -d client_secret="$YT_CLIENT_SECRET" -d refresh_token="$rt" -d grant_type=refresh_token)
+            tok=$(echo "$r" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get("access_token","")); print("scope:", d.get("scope"), d.get("error",""), file=sys.stderr)')
+            [ -z "$tok" ] && continue
+            curl -sS -H "Authorization: Bearer $tok" "https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true" | python3 -c 'import json,sys; d=json.load(sys.stdin); print([ (i["id"], i["snippet"]["title"], i["snippet"].get("customUrl")) for i in d.get("items",[]) ] or d)'
+          done
