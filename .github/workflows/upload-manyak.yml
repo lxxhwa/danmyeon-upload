@@ -53,6 +53,5 @@ jobs:
         run: |
           git config user.name "upload-bot"
           git config user.email "upload-bot@users.noreply.github.com"
-          git pull -q --rebase origin main || true
           git add posted_manyak.json || true
-          git diff --cached --quiet || (git commit -m "업로드 기록 (만약도감)" && git push)
+          git diff --cached --quiet || (git commit -m "업로드 기록 (만약도감)" && git pull -q --rebase origin main && git push)
