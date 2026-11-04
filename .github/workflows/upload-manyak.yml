@@ -54,4 +54,4 @@ jobs:
           git config user.name "upload-bot"
           git config user.email "upload-bot@users.noreply.github.com"
           git add posted_manyak.json || true
-          git diff --cached --quiet || (git commit -m "업로드 기록 (만약도감)" && git pull -q --rebase origin main && git push)
+          git diff --cached --quiet || (git commit -m "업로드 기록 (만약도감)" && for i in 1 2 3 4; do git pull -q --rebase origin main && git push && break; sleep $((i*5)); done)
