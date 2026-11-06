@@ -3,6 +3,7 @@
 queue/<번호_이름>/video.mp4 와 upload_copy.md 가 한 편이다. 올린 결과는 posted.json 에 남긴다.
 플랫폼 하나가 실패하면 그 플랫폼만 다음 실행 때 다시 시도한다.
 """
+import calendar
 import json
 import os
 import re
@@ -20,6 +21,23 @@ PLATFORMS = ["youtube", "instagram", "threads"]
 # 대기 중인 편이 이만큼 이상이면 매일, 아니면 월·수·금에만 올린다.
 DAILY_FROM = int(os.environ.get("DAILY_FROM", "7"))
 AI_NOTE = "\n\n🤖 AI로 만든 영상이에요."
+# 유튜브에 올린 뒤 채널 이름으로 다는 첫 댓글. upload_copy.md 에 '## 유튜브 댓글' 칸이 있으면 그걸 써요.
+# 고정은 API로 안 돼서 앱이나 스튜디오에서 직접 눌러야 해요.
+YT_COMMENTS = {
+    "queue": (
+        "봐주셔서 감사합니다 🔍\n"
+        "겉으로는 절대 볼 수 없는 곳을 3D로 반 갈라 보여드려요.\n"
+        "재밌으셨다면 구독하고 매일 저녁 6시, 다음 단면도 같이 봐요!\n\n"
+        "다음엔 어디를 잘라볼까요? 궁금한 곳을 답글로 남겨주세요 👇"
+    ),
+    "queue_manyak": (
+        "봐주셔서 감사합니다 🌍\n"
+        "말도 안 되는 '만약에'를 과학으로 끝까지 따라가 보는 채널이에요.\n"
+        "재밌으셨다면 구독하고 매일 저녁 6시, 다음 만약도 같이 봐요!\n\n"
+        "궁금한 '만약에'가 있으면 답글로 남겨주세요 👇"
+    ),
+}
+LAST_YT = {}
 
 
 def load_state():
@@ -42,7 +60,7 @@ def parse_copy(path):
         elif cur and not line.startswith("※"):
             sections[cur].append(line)
     get = lambda key: next(("\n".join(v).strip() for k, v in sections.items() if k.startswith(key)), "")
-    yt = get("유튜브")
+    yt = next(("\n".join(v).strip() for k, v in sections.items() if k.startswith("유튜브") and "댓글" not in k), "")
     m = re.search(r"^제목:\s*(.+)$", yt, re.M)
     desc = yt.split("설명:", 1)[1].strip() if "설명:" in yt else ""
     return {
@@ -50,6 +68,7 @@ def parse_copy(path):
         "yt_desc": desc,
         "instagram": get("인스타"),
         "threads": get("스레드"),
+        "yt_comment": get("유튜브 댓글"),
     }
 
 
@@ -103,7 +122,37 @@ def youtube(item, copy):
     check(init)
     res = check(requests.put(init.headers["Location"], data=video,
                              headers={"Authorization": f"Bearer {token}", "Content-Type": "video/mp4"}))
+    LAST_YT.update(id=res["id"], token=token, publish_at=publish_at)
     return f"https://youtube.com/shorts/{res['id']}"
+
+
+def youtube_comment(item, copy):
+    """방금 올린 영상에 첫 댓글을 단다. 비공개일 땐 댓글이 안 달려서 공개 시각까지 기다린다."""
+    text = copy.get("yt_comment") or YT_COMMENTS.get(QUEUE.name, "")
+    if not text or not LAST_YT:
+        return None
+    if LAST_YT.get("publish_at"):
+        due = calendar.timegm(time.strptime(LAST_YT["publish_at"], "%Y-%m-%dT%H:%M:%SZ"))
+        wait = due - time.time() + 60
+        if wait > 3600:
+            print(f"  댓글: 공개가 {int(wait // 60)}분 뒤라 이번엔 건너뛰어요.")
+            return None
+        if wait > 0:
+            print(f"  댓글: 공개될 때까지 {int(wait)}초 기다려요.")
+            time.sleep(wait)
+    body = {"snippet": {"videoId": LAST_YT["id"], "topLevelComment": {"snippet": {"textOriginal": text}}}}
+    last = ""
+    for i in range(4):
+        r = requests.post("https://www.googleapis.com/youtube/v3/commentThreads?part=snippet",
+                          headers={"Authorization": f"Bearer {LAST_YT['token']}"}, json=body)
+        if r.ok:
+            return r.json()["id"]
+        last = f"{r.status_code} {r.text[:300]}"
+        if r.status_code in (401, 403) and "insufficient" in r.text.lower():
+            break  # 토큰에 댓글 권한(youtube.force-ssl)이 없어요.
+        time.sleep(60 * (i + 1))
+    print(f"  댓글: 실패 {last}")
+    return None
 
 
 # ---------- 인스타·스레드 공통: 컨테이너 만들고, 처리 끝나면 게시 ----------
@@ -182,6 +231,12 @@ def main():
             failed = True
             print(f"  {p}: 실패 {e}")
         save_state(state)
+    if LAST_YT and os.environ.get("TEST_RUN") != "true":
+        cid = youtube_comment(item, copy)  # 댓글이 실패해도 업로드는 성공으로 둬요.
+        if cid:
+            state.setdefault(item.name, {})["youtube_comment"] = cid
+            print(f"  댓글: 완료 {cid}")
+            save_state(state)
     return 1 if failed else 0
 
 
