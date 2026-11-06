@@ -1,0 +1,38 @@
+name: 유튜브 열쇠 바꾸기
+
+# OAuth Playground에서 받은 인증 코드(4/...)를 리프레시 토큰으로 바꿔 비밀값에 바로 저장해요.
+# 인증 코드는 한 번 쓰면 끝나는 값이라 기록에 남아도 다시 쓸 수 없어요.
+on:
+  workflow_dispatch:
+    inputs:
+      code:
+        description: "인증 코드 (4/...)"
+        required: true
+      channel:
+        description: "danmyeon 또는 manyak"
+        default: danmyeon
+
+jobs:
+  swap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 코드 → 리프레시 토큰 → 비밀값 저장
+        env:
+          CODE: ${{ inputs.code }}
+          CHANNEL: ${{ inputs.channel }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          r=$(curl -sS https://oauth2.googleapis.com/token \
+            --data-urlencode code="$CODE" -d client_id="$YT_CLIENT_ID" -d client_secret="$YT_CLIENT_SECRET" \
+            -d redirect_uri=https://developers.google.com/oauthplayground -d grant_type=authorization_code)
+          rt=$(echo "$r" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get("refresh_token",""))')
+          at=$(echo "$r" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get("access_token",""))')
+          echo "::add-mask::$rt"; echo "::add-mask::$at"
+          echo "$r" | python3 -c 'import json,sys; d=json.load(sys.stdin); print("scope:", d.get("scope"), "| refresh_token 있음:", bool(d.get("refresh_token")), "|", d.get("error",""), d.get("error_description",""))'
+          [ -z "$rt" ] && { echo "리프레시 토큰이 안 나왔어요."; exit 1; }
+          curl -sS -H "Authorization: Bearer $at" "https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true" | python3 -c 'import json,sys; d=json.load(sys.stdin); print("채널:", [(i["id"], i["snippet"]["title"]) for i in d.get("items",[])] or d)'
+          name=YT_REFRESH_TOKEN; [ "$CHANNEL" = manyak ] && name=MANYAK_YT_REFRESH_TOKEN
+          gh secret set "$name" --repo "$GITHUB_REPOSITORY" --body "$rt"
+          echo "$name 저장 완료"
