@@ -73,5 +73,9 @@
     "youtube": "https://youtube.com/shorts/ka22MDVPiog",
     "threads": "https://www.threads.com/@danmyeon.dogam/post/DfmMeRUNJDO",
     "youtube_comment": "Ugx3DDt1LNZ3SKKcWKV4AaABAg"
+  },
+  "037_blackbox_hook": {
+    "instagram": "skip: 이미 올린 블랙박스 편, 유튜브만 다시 올림",
+    "threads": "skip: 이미 올린 블랙박스 편, 유튜브만 다시 올림"
   }
 }
