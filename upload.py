@@ -217,24 +217,30 @@ def main():
         print(f"오늘은 쉬는 날이에요. 대기 {waiting}편 (매일 올리기는 {DAILY_FROM}편부터)")
         return 0
     print(f"대기 중인 편: {waiting}편")
-    copy = parse_copy(item / "upload_copy.md")
-    print(f"이번 편: {item.name}")
+    # 곳마다 따로 다음 편을 골라요. 한 곳(예: 인스타 열쇠 만료)이 막혀도 나머지는 계속 올라가요.
     failed = False
+    copies, yt_done = {}, None
     for p in wanted:
-        if p in state.get(item.name, {}):
+        target = next((d for d in items if p not in state.get(d.name, {})), None)
+        if not target:
             continue
+        copy = copies.setdefault(target.name, parse_copy(target / "upload_copy.md"))
+        print(f"  {p}: 이번 편 {target.name}")
         try:
-            link = UPLOADERS[p](item, copy)
-            state.setdefault(item.name, {})[p] = link
+            link = UPLOADERS[p](target, copy)
+            state.setdefault(target.name, {})[p] = link
             print(f"  {p}: 완료 {link}")
+            if p == "youtube":
+                yt_done = (target, copy)
         except Exception as e:
             failed = True
             print(f"  {p}: 실패 {e}")
         save_state(state)
-    if LAST_YT and os.environ.get("TEST_RUN") != "true":
-        cid = youtube_comment(item, copy)  # 댓글이 실패해도 업로드는 성공으로 둬요.
+    if yt_done and LAST_YT and os.environ.get("TEST_RUN") != "true":
+        target, copy = yt_done
+        cid = youtube_comment(target, copy)  # 댓글이 실패해도 업로드는 성공으로 둬요.
         if cid:
-            state.setdefault(item.name, {})["youtube_comment"] = cid
+            state.setdefault(target.name, {})["youtube_comment"] = cid
             print(f"  댓글: 완료 {cid}")
             save_state(state)
     return 1 if failed else 0
