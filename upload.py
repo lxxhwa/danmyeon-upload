@@ -169,8 +169,9 @@ def wait_ready(url, params, field, timeout=600):
 
 
 def instagram(item, copy):
-    base = "https://graph.instagram.com"
     uid, tok = os.environ["IG_USER_ID"], os.environ["IG_TOKEN"]
+    # EAA로 시작하는 페이스북 로그인 토큰은 graph.facebook.com, IGAA 인스타 로그인 토큰은 graph.instagram.com
+    base = "https://graph.facebook.com/v21.0" if tok.startswith("EAA") else "https://graph.instagram.com"
     cid = check(requests.post(f"{base}/{uid}/media", data={
         "media_type": "REELS",
         "video_url": public_video_url(item),

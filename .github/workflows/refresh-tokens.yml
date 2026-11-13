@@ -17,8 +17,10 @@ jobs:
           THREADS_TOKEN: ${{ secrets.THREADS_TOKEN }}
         run: |
           set -euo pipefail
-          ig=$(curl -fsS "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=$IG_TOKEN" | jq -r .access_token)
+          if [ "${IG_TOKEN:0:3}" != "EAA" ]; then
+            ig=$(curl -fsS "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=$IG_TOKEN" | jq -r .access_token)
+            gh secret set IG_TOKEN --repo "$GITHUB_REPOSITORY" --body "$ig"
+          else echo "인스타 토큰은 페이스북 방식이라 연장 생략"; fi
           th=$(curl -fsS "https://graph.threads.net/refresh_access_token?grant_type=th_refresh_token&access_token=$THREADS_TOKEN" | jq -r .access_token)
-          gh secret set IG_TOKEN --repo "$GITHUB_REPOSITORY" --body "$ig"
           gh secret set THREADS_TOKEN --repo "$GITHUB_REPOSITORY" --body "$th"
           echo "두 토큰 모두 연장했어요."
