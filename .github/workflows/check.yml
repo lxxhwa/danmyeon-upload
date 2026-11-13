@@ -29,6 +29,12 @@ jobs:
           else echo "유튜브: 아직 없음"; fi
           if [ -n "$IG_TOKEN" ]; then
             t="$IG_TOKEN"; echo "인스타 열쇠 모양: 앞 4글자=${t:0:4} 길이=${#t} 공백포함=$(printf %s "$t" | grep -c "[[:space:]\"]")"
+            if [ "${t:0:3}" = "EAA" ]; then
+              echo "페북 me: $(curl -sS "https://graph.facebook.com/v21.0/me?fields=id,name&access_token=$IG_TOKEN")"
+              echo "페북 pages: $(curl -sS "https://graph.facebook.com/v21.0/me/accounts?fields=name,instagram_business_account{id,username}&access_token=$IG_TOKEN" | sed 's/"access_token":"[^"]*"//g')"
+              echo "IG_USER_ID로 조회: $(curl -sS "https://graph.facebook.com/v21.0/$IG_USER_ID?fields=id,username&access_token=$IG_TOKEN")"
+              echo "권한: $(curl -sS "https://graph.facebook.com/v21.0/me/permissions?access_token=$IG_TOKEN")"
+            fi
             r=$(curl -sS "https://graph.instagram.com/me?fields=user_id,username&access_token=$IG_TOKEN")
             echo "인스타: $r" | sed 's/"access_token[^,}]*//'
             echo "$r" | grep -q "\"user_id\":\"$IG_USER_ID\"" && echo "인스타: 계정 ID 일치" || { echo "인스타: 계정 ID 불일치 또는 실패"; ok=1; }
