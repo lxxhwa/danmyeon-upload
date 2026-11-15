@@ -45,7 +45,8 @@ jobs:
         if: github.event_name == 'schedule'
         run: |
           now_h=$(TZ=Asia/Seoul date +%H); today=$(TZ=Asia/Seoul date +%F)
-          last=$(TZ=Asia/Seoul git log -1 --format=%cd --date=format-local:%F -- posted.json)
+          git fetch -q origin main  # 먼저 돈 업로드가 방금 남긴 기록까지 보려고
+          last=$(TZ=Asia/Seoul git log -1 --format=%cd --date=format-local:%F origin/main -- posted.json)
           if [ "$now_h" -lt 18 ] || [ "$now_h" -gt 21 ]; then echo "지금 ${now_h}시(KST)라 저녁이 아니어서 넘어가요"; echo skip=1 >> "$GITHUB_OUTPUT"
           elif [ "$last" = "$today" ]; then echo "오늘($today) 이미 올렸어요"; echo skip=1 >> "$GITHUB_OUTPUT"
           else echo "올릴게요"; fi
