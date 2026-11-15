@@ -19,7 +19,7 @@ print("== 유튜브")
 at = requests.post("https://oauth2.googleapis.com/token", data={"client_id": os.environ["YT_CLIENT_ID"], "client_secret": os.environ["YT_CLIENT_SECRET"], "refresh_token": os.environ["YT_REFRESH_TOKEN"], "grant_type": "refresh_token"}).json()
 print("scope:", at.get("scope"))
 H = {"Authorization": f"Bearer {at.get('access_token')}"}
-ids = {k: re.search(r"shorts/([\w-]{11})", v["youtube"]).group(1) for k, v in S.items() if v.get("youtube")}
+ids = {k: m.group(1) for k, v in S.items() if (m := re.search(r"(?:shorts/|v=|be/)([\w-]{11})", str(v.get("youtube", ""))))}
 v = requests.get("https://www.googleapis.com/youtube/v3/videos", params={"part": "statistics,snippet", "id": ",".join(list(ids.values())[-20:])}, headers=H).json()
 name = {i: k for k, i in ids.items()}
 for it in v.get("items", []) or [v]:
