@@ -5,7 +5,7 @@ on:
     # 매일 18시쯤(KST) 올려요. 대기 영상이 7편 미만이면 월·수·금에만 올리고, 7편 이상 쌓이면 매일 올려요.
     # 유튜브는 바로 공개하면 쇼츠 피드에 안 떠서, 비공개로 올리고 10분 뒤 공개되게 예약해요(11/4).
     # 11/13~15 깃허브 예약이 6~8시간 늦어져 새벽 1시에 올라간 일이 있어서(11/16), 정각을 피해 여러 번 깨우고
-    # 오늘 이미 올렸거나 저녁(18~21시 KST)이 아니면 그냥 넘어가요. 손으로 돌릴 때는 언제든 올라가요.
+    # 12시간 안에 이미 올렸거나 저녁(18~21시 KST)이 아니면 그냥 넘어가요. 손으로 돌릴 때는 언제든 올라가요.
     - cron: "7 9 * * *"
     - cron: "37 9 * * *"
     - cron: "7 10 * * *"
@@ -44,11 +44,11 @@ jobs:
         id: gate
         if: github.event_name == 'schedule'
         run: |
-          now_h=$(TZ=Asia/Seoul date +%H); today=$(TZ=Asia/Seoul date +%F)
+          now_h=$(TZ=Asia/Seoul date +%H)
           git fetch -q origin main  # 먼저 돈 업로드가 방금 남긴 기록까지 보려고
-          last=$(TZ=Asia/Seoul git log -1 --format=%cd --date=format-local:%F origin/main -- posted.json)
+          last=$(git log -1 --format=%ct FETCH_HEAD -- posted.json); ago=$(( ($(date +%s) - last) / 3600 ))
           if [ "$now_h" -lt 18 ] || [ "$now_h" -gt 21 ]; then echo "지금 ${now_h}시(KST)라 저녁이 아니어서 넘어가요"; echo skip=1 >> "$GITHUB_OUTPUT"
-          elif [ "$last" = "$today" ]; then echo "오늘($today) 이미 올렸어요"; echo skip=1 >> "$GITHUB_OUTPUT"
+          elif [ "$ago" -lt 12 ]; then echo "${ago}시간 전에 이미 올렸어요"; echo skip=1 >> "$GITHUB_OUTPUT"
           else echo "올릴게요"; fi
       - uses: actions/setup-python@v5
         with:
