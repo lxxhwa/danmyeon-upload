@@ -1,0 +1,23 @@
+name: 통계 보기
+
+# 인스타 릴스·유튜브 쇼츠 편별 숫자를 읽기만 해요. 아무것도 올리거나 바꾸지 않아요.
+on:
+  push:
+    branches: [claude/project-thread-z0y8jn]
+    paths: [.github/workflows/stats.yml, stats.py]
+  workflow_dispatch:
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q requests
+      - name: 통계
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+        run: python3 stats.py
