@@ -17,6 +17,10 @@ on:
         description: "시험 업로드 (true면 올린 기록을 남기지 않아요)"
         type: boolean
         default: false
+      daily:
+        description: "매일 저녁 예약용 (true면 저녁 시간·12시간 중복 확인을 하고 올려요)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -28,11 +32,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 50
+      - name: 지금 올릴 때인지 확인
+        id: gate
+        if: github.event_name == 'schedule' || inputs.daily
+        run: |
+          now_h=$(TZ=Asia/Seoul date +%H)
+          git fetch -q origin main
+          last=$(git log -1 --format=%ct FETCH_HEAD -- posted_manyak.json); ago=$(( ($(date +%s) - last) / 3600 ))
+          if [ "$now_h" -lt 18 ] || [ "$now_h" -gt 21 ]; then echo "지금 ${now_h}시(KST)라 저녁이 아니어서 넘어가요"; echo skip=1 >> "$GITHUB_OUTPUT"
+          elif [ "$ago" -lt 12 ]; then echo "${ago}시간 전에 이미 올렸어요"; echo skip=1 >> "$GITHUB_OUTPUT"
+          else echo "올릴게요"; fi
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: pip install requests
       - name: 다음 편 올리기
+        if: steps.gate.outputs.skip != '1'
         env:
           QUEUE_DIR: queue_manyak
           STATE_FILE: posted_manyak.json
@@ -40,7 +57,7 @@ jobs:
           PLATFORMS: ${{ inputs.platforms || 'youtube' }}
           YT_PUBLISH_AT: ${{ inputs.yt_publish_at }}
           YT_PUBLISH_DELAY_MIN: "10"
-          SCHEDULED: ${{ github.event_name == 'schedule' }}
+          SCHEDULED: ${{ github.event_name == 'schedule' || inputs.daily }}
           TEST_RUN: ${{ inputs.test && 'true' || 'false' }}
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
@@ -49,7 +66,7 @@ jobs:
           if [ -z "$YT_REFRESH_TOKEN" ]; then echo "만약도감 유튜브 열쇠(MANYAK_YT_REFRESH_TOKEN)가 아직 없어요."; exit 0; fi
           python upload.py
       - name: 올린 기록 저장
-        if: always() && !inputs.test
+        if: always() && !inputs.test && steps.gate.outputs.skip != '1'
         run: |
           git config user.name "upload-bot"
           git config user.email "upload-bot@users.noreply.github.com"

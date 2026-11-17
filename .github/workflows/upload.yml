@@ -5,6 +5,7 @@ on:
     # 매일 18시쯤(KST) 올려요. 대기 영상이 7편 미만이면 월·수·금에만 올리고, 7편 이상 쌓이면 매일 올려요.
     # 유튜브는 바로 공개하면 쇼츠 피드에 안 떠서, 비공개로 올리고 10분 뒤 공개되게 예약해요(11/4).
     # 11/13~15 깃허브 예약이 6~8시간 늦어져 새벽 1시에 올라간 일이 있어서(11/16), 정각을 피해 여러 번 깨우고
+    # 깃허브 예약만으로는 자주 늦어서(11/17엔 저녁 내내 안 돎), 매일 18:03 KST에 Claude 예약 작업이 daily=true로 직접 깨워요.
     # 12시간 안에 이미 올렸거나 저녁(18~21시 KST)이 아니면 그냥 넘어가요. 손으로 돌릴 때는 언제든 올라가요.
     - cron: "7 9 * * *"
     - cron: "37 9 * * *"
@@ -27,6 +28,10 @@ on:
         description: "시험 업로드 (true면 올린 기록을 남기지 않아 나중에 정식으로 다시 올라가요)"
         type: boolean
         default: false
+      daily:
+        description: "매일 저녁 예약용 (true면 저녁 시간·12시간 중복 확인을 하고 올려요)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -45,7 +50,7 @@ jobs:
         run: git pull -q --ff-only origin main
       - name: 지금 올릴 때인지 확인
         id: gate
-        if: github.event_name == 'schedule'
+        if: github.event_name == 'schedule' || inputs.daily
         run: |
           now_h=$(TZ=Asia/Seoul date +%H)
           git fetch -q origin main  # 먼저 돈 업로드가 방금 남긴 기록까지 보려고
@@ -64,7 +69,7 @@ jobs:
           YT_PRIVACY: ${{ inputs.yt_privacy || 'public' }}
           YT_PUBLISH_AT: ${{ inputs.yt_publish_at }}
           YT_PUBLISH_DELAY_MIN: "10"
-          SCHEDULED: ${{ github.event_name == 'schedule' }}
+          SCHEDULED: ${{ github.event_name == 'schedule' || inputs.daily }}
           TEST_RUN: ${{ inputs.test && 'true' || 'false' }}
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
