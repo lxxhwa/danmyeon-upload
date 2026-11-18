@@ -35,6 +35,7 @@ def yt_title(item):
 
 
 def main():
+    sys.stdout.reconfigure(line_buffering=True)
     token = check(requests.post("https://oauth2.googleapis.com/token", data={
         "client_id": os.environ["YT_CLIENT_ID"],
         "client_secret": os.environ["YT_CLIENT_SECRET"],
@@ -48,7 +49,7 @@ def main():
         # 막 만든 재생목록은 유튜브 쪽에 반영되기까지 잠깐 '없음(404)'으로 나와요. 조금 기다렸다 다시 해요.
         for i in range(tries):
             r = fn()
-            if r.status_code != 404 or i == tries - 1:
+            if r.status_code != 404 or "playlistNotFound" not in r.text or i == tries - 1:
                 return check(r)
             time.sleep(10)
 
@@ -103,9 +104,15 @@ def main():
         for name in wanted:
             if videos[name] in have:
                 continue
-            retry(lambda: s.post(f"{API}/playlistItems", params={"part": "snippet"}, json={
-                "snippet": {"playlistId": pid, "resourceId": {"kind": "youtube#video", "videoId": videos[name]}},
-            }))
+            try:
+                retry(lambda: s.post(f"{API}/playlistItems", params={"part": "snippet"}, json={
+                    "snippet": {"playlistId": pid, "resourceId": {"kind": "youtube#video", "videoId": videos[name]}},
+                }))
+            except RuntimeError as e:
+                if "videoNotFound" not in str(e):
+                    raise
+                print(f"  {name}: 영상 {videos[name]} 이 채널에 없어요(지워졌나 봐요). 건너뜀")
+                continue
             have.add(videos[name])
             added += 1
             print(f"  {pl['title']} ← {name}")
