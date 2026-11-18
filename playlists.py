@@ -7,6 +7,7 @@ import json
 import os
 import re
 import sys
+import time
 from pathlib import Path
 
 import requests
@@ -43,10 +44,18 @@ def main():
     s = requests.Session()
     s.headers["Authorization"] = f"Bearer {token}"
 
+    def retry(fn, tries=8):
+        # 막 만든 재생목록은 유튜브 쪽에 반영되기까지 잠깐 '없음(404)'으로 나와요. 조금 기다렸다 다시 해요.
+        for i in range(tries):
+            r = fn()
+            if r.status_code != 404 or i == tries - 1:
+                return check(r)
+            time.sleep(10)
+
     def pages(url, params):
         params = dict(params, maxResults=50)
         while True:
-            d = check(s.get(url, params=params))
+            d = retry(lambda: s.get(url, params=params))
             yield from d.get("items", [])
             if not d.get("nextPageToken"):
                 return
@@ -74,26 +83,27 @@ def main():
     config = json.loads((ROOT / "playlists.json").read_text()).get(QUEUE.name, [])
     ids = json.loads(IDS.read_text()) if IDS.exists() else {}
     mine = {p["snippet"]["title"]: p["id"] for p in pages(f"{API}/playlists", {"part": "snippet", "mine": "true"})}
-    existing_ids = set(mine.values())
     added = 0
     for pl in config:
         key = f"{QUEUE.name}:{pl['key']}"
-        pid = ids.get(key)
-        if pid not in existing_ids:  # 지워졌거나 처음이면 제목으로 찾고, 없으면 새로 만들어요
-            pid = mine.get(pl["title"]) or check(s.post(f"{API}/playlists", params={"part": "snippet,status"}, json={
+        pid = ids.get(key) or mine.get(pl["title"])
+        fresh = False
+        if not pid:  # 처음이면 새로 만들어요. 한 번 만든 건 아이디로 기억해서, 제목을 바꿔도 다시 안 만들어요
+            fresh = True
+            pid = check(s.post(f"{API}/playlists", params={"part": "snippet,status"}, json={
                 "snippet": {"title": pl["title"], "description": pl.get("description", ""), "defaultLanguage": "ko"},
                 "status": {"privacyStatus": "public"},
             }))["id"]
             ids[key] = pid
             IDS.write_text(json.dumps(ids, ensure_ascii=False, indent=2) + "\n")
             print(f"{pl['title']}: 재생목록 준비 https://www.youtube.com/playlist?list={pid}")
-        have = {it["snippet"]["resourceId"]["videoId"]
+        have = set() if fresh else {it["snippet"]["resourceId"]["videoId"]
                 for it in pages(f"{API}/playlistItems", {"part": "snippet", "playlistId": pid})}
         wanted = list(videos) if pl["items"] == "all" else [n for n in pl["items"] if n in videos]
         for name in wanted:
             if videos[name] in have:
                 continue
-            check(s.post(f"{API}/playlistItems", params={"part": "snippet"}, json={
+            retry(lambda: s.post(f"{API}/playlistItems", params={"part": "snippet"}, json={
                 "snippet": {"playlistId": pid, "resourceId": {"kind": "youtube#video", "videoId": videos[name]}},
             }))
             have.add(videos[name])
