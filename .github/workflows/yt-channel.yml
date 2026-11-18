@@ -23,3 +23,17 @@ jobs:
             [ -z "$tok" ] && continue
             curl -sS -H "Authorization: Bearer $tok" "https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true" | python3 -c 'import json,sys; d=json.load(sys.stdin); print([ (i["id"], i["snippet"]["title"], i["snippet"].get("customUrl")) for i in d.get("items",[]) ] or d)'
           done
+          for name in DANMYEON MANYAK; do rt="${!name}"; [ -z "$rt" ] && continue; echo "== $name 화질"; tok=$(curl -sS https://oauth2.googleapis.com/token -d client_id="$YT_CLIENT_ID" -d client_secret="$YT_CLIENT_SECRET" -d refresh_token="$rt" -d grant_type=refresh_token | jq -r .access_token)
+            # 최근 6편 화질 정보(읽기만)
+            TOK="$tok" python3 - <<'PY'
+          import json, os, urllib.request
+          h = {"Authorization": "Bearer " + os.environ["TOK"]}
+          def get(u):
+              return json.load(urllib.request.urlopen(urllib.request.Request("https://www.googleapis.com/youtube/v3/" + u, headers=h)))
+          up = get("channels?part=contentDetails&mine=true")["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
+          ids = ",".join(i["contentDetails"]["videoId"] for i in get(f"playlistItems?part=contentDetails&maxResults=6&playlistId={up}")["items"])
+          for v in get(f"videos?part=snippet,contentDetails,fileDetails,processingDetails&id={ids}")["items"]:
+              fd = v.get("fileDetails", {}); vs = (fd.get("videoStreams") or [{}])[0]
+              print(v["id"], v["snippet"]["title"][:20], "| 화질:", v["contentDetails"]["definition"], "| 원본:", vs.get("widthPixels"), "x", vs.get("heightPixels"), vs.get("bitrateBps"), "| 처리:", v.get("processingDetails", {}).get("processingStatus"))
+          PY
+          done
