@@ -46,10 +46,11 @@ def main():
     s.headers["Authorization"] = f"Bearer {token}"
 
     def retry(fn, tries=8):
-        # 막 만든 재생목록은 유튜브 쪽에 반영되기까지 잠깐 '없음(404)'으로 나와요. 조금 기다렸다 다시 해요.
+        # 막 만든 재생목록은 유튜브 쪽에 반영되기까지 잠깐 '없음(404)'이나 '중단(409)'으로 나와요. 조금 기다렸다 다시 해요.
         for i in range(tries):
             r = fn()
-            if r.status_code != 404 or "playlistNotFound" not in r.text or i == tries - 1:
+            busy = r.status_code in (409, 500, 503) or (r.status_code == 404 and "playlistNotFound" in r.text)
+            if not busy or i == tries - 1:
                 return check(r)
             time.sleep(10)
 
