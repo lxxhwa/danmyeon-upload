@@ -1,0 +1,48 @@
+{
+  "queue": [
+    {
+      "key": "all",
+      "title": "단면도감 전체 몰아보기 🔍",
+      "description": "겉으로는 절대 볼 수 없는 곳을 3D로 반 갈라 보여드려요. 1편부터 순서대로 전부 모았어요.",
+      "items": "all"
+    },
+    {
+      "key": "korea",
+      "title": "매일 지나치던 그곳, 반 갈라 보면? 🇰🇷",
+      "description": "공항, 롯데타워, 석촌호수, 잠수교, 청계천까지. 우리가 매일 보는 곳을 반 갈라 봤어요.",
+      "items": ["001_airport_baggage", "002_lotte_elevator", "003_yeouido_origin", "004_jamsil_origin", "005_ddp_wall", "030_jamsugyo", "031_cheonggyecheon", "032_sinwol_tunnel", "033_incheon_bridge", "034_saemangeum", "035_national_assembly", "036_toilet"]
+    },
+    {
+      "key": "mega",
+      "title": "말도 안 되게 거대한 건축물 속 🏗️",
+      "description": "롯데타워, 부르즈 할리파, 피라미드, 파나마 운하. 인류가 만든 초거대 구조물의 속을 들여다봐요.",
+      "items": ["002_lotte_elevator", "006_tokyo_temple", "012_burj_sand", "014_pyramid_void", "018_palm_jumeirah", "020_seikan_tunnel", "023_panama_canal", "024_hoover_dam", "026_pisa_tower", "033_incheon_bridge", "034_saemangeum"]
+    },
+    {
+      "key": "deep",
+      "title": "땅 밑·바다 밑, 아무도 못 본 곳 🕳️",
+      "description": "가장 깊은 구멍, 금괴 금고, 지하 도시, 바다 밑 인터넷 선. 발밑 깊은 곳의 비밀을 모았어요.",
+      "items": ["007_onkalo_door", "008_kola_borehole", "009_nyfed_gold", "015_undersea_cable", "019_superkamiokande", "020_seikan_tunnel", "022_vostok_lake", "025_coober_pedy", "027_nyc_steam", "028_derinkuyu", "032_sinwol_tunnel"]
+    },
+    {
+      "key": "nature",
+      "title": "자연이 만든 놀라운 설계 🐋",
+      "description": "개미집, 흰개미 탑, 대왕고래 심장, 남극의 피 폭포. 자연 속 신기한 구조를 반 갈라 봤어요.",
+      "items": ["010_antnest_cement", "016_bluewhale_heart", "021_termite_mound", "022_vostok_lake", "029_blood_falls"]
+    },
+    {
+      "key": "tech",
+      "title": "알고 나면 신기한 기술의 속사정 ⚙️",
+      "description": "블랙박스, 종자 금고, 우주정거장 물, 공항 수하물. 매일 쓰는데 몰랐던 기술의 속을 열어 봐요.",
+      "items": ["001_airport_baggage", "011_seedvault", "013_blackbox", "015_undersea_cable", "017_iss_water", "036_toilet"]
+    }
+  ],
+  "queue_manyak": [
+    {
+      "key": "all",
+      "title": "만약도감 전체 몰아보기 🌍",
+      "description": "말도 안 되는 '만약에'를 과학으로 끝까지 따라가 봐요. 1편부터 순서대로 전부 모았어요.",
+      "items": "all"
+    }
+  ]
+}

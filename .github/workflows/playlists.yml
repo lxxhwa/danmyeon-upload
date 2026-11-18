@@ -1,0 +1,48 @@
+name: 재생목록 맞추기
+
+# playlists.json 대로 유튜브 재생목록을 만들고, 빠진 영상만 넣어요. 여러 번 돌려도 같은 영상을 두 번 넣지 않아요.
+# 업로드가 끝날 때도 자동으로 돌아서 새 편이 들어가요. 이건 손으로 한 번에 맞출 때 써요.
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: "danmyeon, manyak, 또는 both"
+        default: both
+
+permissions:
+  contents: write
+
+concurrency: upload
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: 단면도감
+        if: inputs.channel != 'manyak'
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+        run: python playlists.py
+      - name: 만약도감
+        if: always() && inputs.channel != 'danmyeon'
+        env:
+          QUEUE_DIR: queue_manyak
+          STATE_FILE: posted_manyak.json
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.MANYAK_YT_REFRESH_TOKEN }}
+        run: python playlists.py
+      - name: 재생목록 아이디 저장
+        if: always()
+        run: |
+          git config user.name "upload-bot"
+          git config user.email "upload-bot@users.noreply.github.com"
+          git add playlist_ids.json 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "재생목록 아이디" && for i in 1 2 3 4; do git pull -q --rebase origin main && git push && break; sleep $((i*5)); done)
