@@ -1,0 +1,23 @@
+name: 유튜브 썸네일 바꾸기
+
+# 이미 올라간 편의 유튜브 썸네일을 영상 첫 장면(queue/<편>/thumb.jpg)으로 바꿔요.
+# 새 편은 업로드할 때 자동으로 들어가서 이건 예전 편 고칠 때만 써요.
+on:
+  workflow_dispatch:
+    inputs:
+      items:
+        description: "바꿀 편 폴더 이름 (쉼표로 구분)"
+        required: true
+
+jobs:
+  thumbs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q requests
+      - env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          ITEMS: ${{ inputs.items }}
+        run: python set_thumbs.py "$ITEMS"
