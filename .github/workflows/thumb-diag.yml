@@ -1,0 +1,32 @@
+name: 썸네일 확인
+
+# 유튜브 최근 편 썸네일·숫자와 대기 영상 첫 장면을 읽기만 해요. 아무것도 바꾸지 않아요.
+on:
+  push:
+    branches: [claude/project-thread-44wmgt]
+    paths: [.github/workflows/thumb-diag.yml, diag/thumb_diag.py]
+  workflow_dispatch:
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q requests
+      - name: 유튜브 썸네일
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+        run: python3 diag/thumb_diag.py
+      - name: 영상 첫 장면
+        run: |
+          sudo apt-get -qq install -y ffmpeg >/dev/null
+          for d in queue/02[0-9]_* queue/03[0-6]_*; do n=$(basename $d)
+            for t in 0 0.1 0.5 1.5 3.2; do ffmpeg -loglevel error -ss $t -i $d/video.mp4 -frames:v 1 -vf scale=360:-2 out/frame_${n}_$t.jpg; done
+            ffprobe -v error -show_entries format=duration -of csv=p=0 $d/video.mp4 | sed "s/^/$n 길이 /"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: thumbs
+          path: out/
