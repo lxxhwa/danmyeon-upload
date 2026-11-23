@@ -123,7 +123,20 @@ def youtube(item, copy):
     res = check(requests.put(init.headers["Location"], data=video,
                              headers={"Authorization": f"Bearer {token}", "Content-Type": "video/mp4"}))
     LAST_YT.update(id=res["id"], token=token, publish_at=publish_at)
+    set_thumbnail(res["id"], token, item)
     return f"https://youtube.com/shorts/{res['id']}"
+
+
+def set_thumbnail(vid, token, item):
+    """thumb.jpg(영상 첫 장면, 훅 문구 화면)가 있으면 유튜브 썸네일로 넣는다.
+    안 넣으면 유튜브가 영상 중간 장면을 골라서 훅 문구가 안 보여요(11/21). 실패해도 업로드는 그대로 둬요."""
+    thumb = item / "thumb.jpg"
+    if not thumb.exists():
+        return False
+    r = requests.post(f"https://www.googleapis.com/upload/youtube/v3/thumbnails/set?videoId={vid}",
+                      headers={"Authorization": f"Bearer {token}", "Content-Type": "image/jpeg"}, data=thumb.read_bytes())
+    print(f"  썸네일: {'완료' if r.ok else '실패 ' + str(r.status_code) + ' ' + r.text[:200]}")
+    return r.ok
 
 
 def youtube_comment(item, copy):
