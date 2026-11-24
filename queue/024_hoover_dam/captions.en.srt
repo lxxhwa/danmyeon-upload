@@ -1,0 +1,31 @@
+1
+00:00:00,400 --> 00:00:07,200
+In the middle of a U.S. desert, a giant 221 m concrete wall blocks a river.
+
+2
+00:00:07,200 --> 00:00:09,650
+It's the Hoover Dam, built in the 1930s.
+
+3
+00:00:09,650 --> 00:00:13,550
+But when concrete hardens, it makes a lot of heat by itself.
+
+4
+00:00:13,550 --> 00:00:19,000
+If they poured it all at once, it would take 125 years to cool down.
+
+5
+00:00:19,000 --> 00:00:23,050
+So they split the dam into many blocks and poured them piece by piece.
+
+6
+00:00:23,050 --> 00:00:26,850
+Inside the blocks, they laid over 900 km of steel pipes.
+
+7
+00:00:26,850 --> 00:00:31,600
+Cold water ran through them to cool the concrete from inside.
+
+8
+00:00:31,600 --> 00:00:35,800
+After it cooled, the pipes were filled with cement and became part of the dam.

@@ -1,0 +1,31 @@
+1
+00:00:00,400 --> 00:00:03,950
+Astronauts drink yesterday's coffee again today.
+
+2
+00:00:03,950 --> 00:00:07,150
+On the International Space Station, they never throw away a drop of water.
+
+3
+00:00:07,150 --> 00:00:10,400
+They collect water from sweat and breath out of the air.
+
+4
+00:00:10,400 --> 00:00:14,450
+They boil urine into steam and take out only the clean water.
+
+5
+00:00:14,450 --> 00:00:19,750
+For the leftover liquid, warm dry air squeezes out the last drops.
+
+6
+00:00:19,750 --> 00:00:24,650
+In 2023, they reached 98% water recycling.
+
+7
+00:00:24,650 --> 00:00:28,750
+After many filters, this water is said to be cleaner than tap water on Earth.
+
+8
+00:00:28,750 --> 00:00:32,100
+We will need this to go to Mars one day.

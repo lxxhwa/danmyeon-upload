@@ -1,0 +1,31 @@
+1
+00:00:00,400 --> 00:00:05,800
+1,000 m under a mountain in Japan, there is a giant water tank covered in gold balls.
+
+2
+00:00:05,800 --> 00:00:09,950
+It's Super-Kamiokande, hidden deep in an old mine in Gifu.
+
+3
+00:00:09,950 --> 00:00:14,300
+The tank holds 50,000 tons of very clean water.
+
+4
+00:00:14,300 --> 00:00:19,550
+On the walls are over 10,000 light sensors, each 50 cm wide.
+
+5
+00:00:19,550 --> 00:00:24,250
+It's waiting for neutrinos, 'ghost particles' from space.
+
+6
+00:00:24,250 --> 00:00:29,150
+Neutrinos hit almost nothing. They can pass right through the whole Earth.
+
+7
+00:00:29,150 --> 00:00:33,550
+Very rarely, one hits the water and makes a faint blue flash.
+
+8
+00:00:33,550 --> 00:00:37,900
+To catch that one flash, they went this deep underground.

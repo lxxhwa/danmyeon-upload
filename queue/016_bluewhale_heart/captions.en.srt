@@ -1,0 +1,31 @@
+1
+00:00:00,400 --> 00:00:06,050
+This heart weighs 180 kg and pumps 220 L of blood with each beat.
+
+2
+00:00:06,050 --> 00:00:09,700
+It is the heart of the blue whale, the biggest animal on Earth.
+
+3
+00:00:09,700 --> 00:00:12,700
+It's as big as a small car, or a pony.
+
+4
+00:00:12,700 --> 00:00:17,300
+A human heart is about 300 g, so this is about 600 times heavier.
+
+5
+00:00:17,300 --> 00:00:21,950
+220 L of blood in one beat is more than a full bathtub.
+
+6
+00:00:21,950 --> 00:00:25,850
+On a deep dive, this heart slows down to just 2 beats a minute.
+
+7
+00:00:25,850 --> 00:00:29,650
+Back at the surface, it beats strongly again, over 30 times a minute.
+
+8
+00:00:29,650 --> 00:00:34,000
+The biggest heart in Earth's history is still beating in the sea today.

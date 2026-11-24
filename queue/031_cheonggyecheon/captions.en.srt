@@ -1,0 +1,31 @@
+1
+00:00:00,400 --> 00:00:05,000
+Cheonggyecheon flows through the middle of Seoul. Where does its water come from?
+
+2
+00:00:05,000 --> 00:00:09,650
+In fact, it used to be a stream that almost dried up when there was no rain.
+
+3
+00:00:09,650 --> 00:00:13,500
+So most of the water flowing now is brought in by people.
+
+4
+00:00:13,500 --> 00:00:17,900
+They pump water from the Han River, clean it, and send it through underground pipes.
+
+5
+00:00:17,900 --> 00:00:21,550
+Groundwater that comes up in subway stations is added too.
+
+6
+00:00:21,550 --> 00:00:25,700
+Over 100,000 tons of water a day pour out at the top of the stream.
+
+7
+00:00:25,700 --> 00:00:30,200
+It flows over 5 km, through Jungnangcheon, and back into the Han River.
+
+8
+00:00:30,200 --> 00:00:34,700
+So Cheonggyecheon is a path for Han River water to loop through Seoul.

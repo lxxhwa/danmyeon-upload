@@ -1,0 +1,31 @@
+1
+00:00:00,400 --> 00:00:05,850
+There is a seed vault in an Arctic mountain, so we can open it even if the world ends.
+
+2
+00:00:05,850 --> 00:00:09,450
+It's in Svalbard, Norway, a frozen island close to the North Pole.
+
+3
+00:00:09,450 --> 00:00:13,300
+A tunnel goes about 130 m into the side of the mountain.
+
+4
+00:00:13,300 --> 00:00:17,450
+At the end, there are three rooms full of seed boxes.
+
+5
+00:00:17,450 --> 00:00:20,350
+Inside, it is always kept at -18°C.
+
+6
+00:00:20,350 --> 00:00:25,350
+Even without power, the frozen ground keeps it around -3°C.
+
+7
+00:00:25,350 --> 00:00:31,100
+Now more than 1.3 million seed samples from around the world sleep here.
+
+8
+00:00:31,100 --> 00:00:36,650
+In 2015, a lab in war-torn Syria became the first to take seeds out.

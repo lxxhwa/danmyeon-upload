@@ -1,0 +1,31 @@
+1
+00:00:00,400 --> 00:00:04,850
+The tallest building in the world stands on sand, not rock.
+
+2
+00:00:04,850 --> 00:00:08,350
+It's the 828 m Burj Khalifa in Dubai.
+
+3
+00:00:08,350 --> 00:00:12,800
+Under it, there is no hard rock, only sand and soft ground.
+
+4
+00:00:12,800 --> 00:00:17,800
+So they put 192 concrete piles, each 1.5 m wide, into the ground.
+
+5
+00:00:17,800 --> 00:00:20,700
+Each pile is about 50 m long.
+
+6
+00:00:20,700 --> 00:00:25,450
+A 3.7 m thick concrete slab covers them all.
+
+7
+00:00:25,450 --> 00:00:29,800
+The piles don't stand on the bottom. They hold the weight by gripping the soil around them.
+
+8
+00:00:29,800 --> 00:00:33,950
+A tower almost 830 m tall stands by grabbing the ground.
