@@ -1,0 +1,31 @@
+1
+00:00:00,000 --> 00:00:03,250
+Your checked suitcase at the airport... how does it find your plane?
+
+2
+00:00:03,250 --> 00:00:07,350
+Behind the check-in desk, your bag goes onto a belt under the floor.
+
+3
+00:00:07,350 --> 00:00:12,000
+Under Incheon Airport Terminal 2, the belts are 96 km long.
+
+4
+00:00:12,000 --> 00:00:17,300
+First, an X-ray machine checks the bag for dangerous things.
+
+5
+00:00:17,300 --> 00:00:21,750
+Then your flight number is set, and the bag rushes off at 7 m per second.
+
+6
+00:00:21,750 --> 00:00:27,000
+At every turn, the path changes by itself, so it reaches your plane.
+
+7
+00:00:27,000 --> 00:00:31,450
+It moves 180,000 bags a day. Only 2 in a million miss the plane.
+
+8
+00:00:31,450 --> 00:00:36,600
+While we walk to the gate, our bags race to the plane under our feet.

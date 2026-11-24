@@ -1,0 +1,24 @@
+name: 유튜브 영어 자막 붙이기
+
+# 이미 올라간 편에 쉬운 영어 자막(queue/<편>/captions.en.srt)을 붙여요.
+# 새 편은 업로드할 때 자동으로 들어가서 이건 예전 편에만 써요. 이미 영어 자막이 있는 영상은 건너뛰어요.
+on:
+  workflow_dispatch:
+    inputs:
+      items:
+        description: "붙일 편 폴더 이름 (쉼표로 구분, 비우면 올라간 편 전부)"
+        required: false
+        default: ""
+
+jobs:
+  captions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q requests
+      - env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          ITEMS: ${{ inputs.items }}
+        run: python add_captions.py "$ITEMS"

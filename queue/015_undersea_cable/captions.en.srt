@@ -1,0 +1,31 @@
+1
+00:00:00,400 --> 00:00:05,000
+This video you're watching may have come through a hose under the sea.
+
+2
+00:00:05,000 --> 00:00:10,650
+Over 99% of data between continents goes through undersea cables, not satellites.
+
+3
+00:00:10,650 --> 00:00:14,550
+In the deep sea, the cable is only as thick as a garden hose.
+
+4
+00:00:14,550 --> 00:00:19,400
+Cut it open, and there are a few glass fibers as thin as hair in the middle.
+
+5
+00:00:19,400 --> 00:00:24,150
+Around them are layers of copper, steel wire, and plastic.
+
+6
+00:00:24,150 --> 00:00:28,100
+Light travels inside these glass fibers and carries the data.
+
+7
+00:00:28,100 --> 00:00:32,450
+The biggest danger is not sharks. It's fishing nets and ship anchors.
+
+8
+00:00:32,450 --> 00:00:37,150
+A few thin lines under the sea connect the whole world every day.

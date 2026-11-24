@@ -124,6 +124,7 @@ def youtube(item, copy):
                              headers={"Authorization": f"Bearer {token}", "Content-Type": "video/mp4"}))
     LAST_YT.update(id=res["id"], token=token, publish_at=publish_at)
     set_thumbnail(res["id"], token, item)
+    set_captions(res["id"], token, item)
     return f"https://youtube.com/shorts/{res['id']}"
 
 
@@ -137,6 +138,22 @@ def set_thumbnail(vid, token, item):
                       headers={"Authorization": f"Bearer {token}", "Content-Type": "image/jpeg"}, data=thumb.read_bytes())
     print(f"  썸네일: {'완료' if r.ok else '실패 ' + str(r.status_code) + ' ' + r.text[:200]}")
     return r.ok
+
+
+def set_captions(vid, token, item):
+    """captions.en.srt(쉬운 영어 자막)가 있으면 유튜브 영어 자막 트랙으로 올린다. 화면 속 한국어 자막은 그대로.
+    시청자가 CC를 켜면 영어가 나와요. 실패해도 업로드는 그대로 둬요."""
+    srt = item / "captions.en.srt"
+    if not srt.exists():
+        return None
+    meta = {"snippet": {"videoId": vid, "language": "en", "name": "English", "isDraft": False}}
+    boundary = "danmyeon_caption_boundary"
+    body = (f"--{boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n{json.dumps(meta)}\r\n"
+            f"--{boundary}\r\nContent-Type: application/octet-stream\r\n\r\n").encode() + srt.read_bytes() + f"\r\n--{boundary}--\r\n".encode()
+    r = requests.post("https://www.googleapis.com/upload/youtube/v3/captions?uploadType=multipart&part=snippet",
+                      headers={"Authorization": f"Bearer {token}", "Content-Type": f"multipart/related; boundary={boundary}"}, data=body)
+    print(f"  영어 자막: {'완료' if r.ok else '실패 ' + str(r.status_code) + ' ' + r.text[:200]}")
+    return r.json().get("id") if r.ok else None
 
 
 def youtube_comment(item, copy):

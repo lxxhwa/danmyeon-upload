@@ -1,0 +1,31 @@
+1
+00:00:00,400 --> 00:00:04,100
+When a plane breaks into pieces, why is this box still OK?
+
+2
+00:00:04,100 --> 00:00:07,850
+It's called a black box, but it's really bright orange.
+
+3
+00:00:07,850 --> 00:00:12,300
+It can survive a hit 3,400 times stronger than gravity.
+
+4
+00:00:12,300 --> 00:00:16,350
+It can last 1 hour in a 1,100°C fire,
+
+5
+00:00:16,350 --> 00:00:19,050
+and the water pressure 6,000 m under the sea.
+
+6
+00:00:19,050 --> 00:00:23,850
+But the only part that really needs to be safe is the small recorder inside.
+
+7
+00:00:23,850 --> 00:00:29,300
+So that small chip is wrapped in layers of heat shield and steel.
+
+8
+00:00:29,300 --> 00:00:34,100
+If it falls into the sea, it sends signals for over 30 days, calling 'Find me!'

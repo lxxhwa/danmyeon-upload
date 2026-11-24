@@ -1,0 +1,31 @@
+1
+00:00:00,400 --> 00:00:05,200
+Lotte World Tower is 555 m tall. How long does the elevator take to the top?
+
+2
+00:00:05,200 --> 00:00:09,300
+About 1 minute. The sky deck elevator goes up at 10 m per second.
+
+3
+00:00:09,300 --> 00:00:14,900
+It goes 496 m in one ride, from B2 to the 121st floor.
+
+4
+00:00:14,900 --> 00:00:19,350
+It is a double-deck elevator, so it carries people on two floors at once.
+
+5
+00:00:19,350 --> 00:00:25,150
+The glass floor on the 118th floor is 478 m high. Each square meter holds 1 ton.
+
+6
+00:00:25,150 --> 00:00:29,400
+There are 61 elevators. In a fire, 19 of them help people escape.
+
+7
+00:00:29,400 --> 00:00:34,850
+108 concrete piles in rock, 38 m underground, hold all this weight.
+
+8
+00:00:34,850 --> 00:00:39,850
+While we reach the sky in 1 minute, giant roots hold on under the ground.

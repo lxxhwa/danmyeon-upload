@@ -1,0 +1,31 @@
+1
+00:00:00,400 --> 00:00:04,900
+Did you know the Leaning Tower of Pisa was once closed because it might fall?
+
+2
+00:00:04,900 --> 00:00:08,250
+The tower started to lean while it was still being built.
+
+3
+00:00:08,250 --> 00:00:12,050
+The ground is soft clay, so one side slowly sank.
+
+4
+00:00:12,050 --> 00:00:16,150
+In 1990, it leaned too much, so they closed it.
+
+5
+00:00:16,150 --> 00:00:20,150
+Engineers took out tiny bits of soil from under the other side.
+
+6
+00:00:20,150 --> 00:00:23,450
+Then the tower slowly moved back by itself.
+
+7
+00:00:23,450 --> 00:00:26,850
+In 11 years, they straightened it by about 45 cm.
+
+8
+00:00:26,850 --> 00:00:31,100
+It still leans, but it should be fine for hundreds of years.
