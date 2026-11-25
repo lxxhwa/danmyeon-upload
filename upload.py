@@ -274,6 +274,10 @@ def main():
             state.setdefault(target.name, {})["youtube_comment"] = cid
             print(f"  댓글: 완료 {cid}")
             save_state(state)
+        # 업로드 직후 넣은 썸네일을 유튜브가 처리 끝난 뒤 중간 장면으로 덮어쓸 때가 있어요(11/25 데린쿠유 편).
+        # 공개된 뒤(댓글 단계에서 공개 시각까지 기다림) 첫 장면 썸네일을 한 번 더 넣어요.
+        print("  썸네일(공개 후 다시): ", end="")
+        set_thumbnail(LAST_YT["id"], LAST_YT["token"], target)
     return 1 if failed else 0
 
 
