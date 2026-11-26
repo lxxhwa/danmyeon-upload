@@ -1,0 +1,351 @@
+1
+00:00:00,400 --> 00:00:05,200
+Lotte World Tower is 555 m tall. How long does the elevator take to the top?
+
+2
+00:00:05,200 --> 00:00:09,300
+About 1 minute. The sky deck elevator goes up at 10 m per second.
+
+3
+00:00:09,300 --> 00:00:14,900
+It goes 496 m in one ride, from B2 to the 121st floor.
+
+4
+00:00:14,900 --> 00:00:19,350
+It is a double-deck elevator, so it carries people on two floors at once.
+
+5
+00:00:19,350 --> 00:00:25,150
+The glass floor on the 118th floor is 478 m high. Each square meter holds 1 ton.
+
+6
+00:00:25,150 --> 00:00:29,400
+There are 61 elevators. In a fire, 19 of them help people escape.
+
+7
+00:00:29,400 --> 00:00:34,850
+108 concrete piles in rock, 38 m underground, hold all this weight.
+
+8
+00:00:34,850 --> 00:00:39,850
+While we reach the sky in 1 minute, giant roots hold on under the ground.
+
+9
+00:00:40,333 --> 00:00:44,533
+On the way to Incheon Airport, a bridge goes on and on over the sea.
+
+10
+00:00:44,533 --> 00:00:47,533
+It's Incheon Bridge, over 21 km long.
+
+11
+00:00:47,533 --> 00:00:52,533
+In the middle are two towers, 238 m tall, as tall as the 63 Building.
+
+12
+00:00:52,533 --> 00:00:56,483
+Cables from the towers hold up the road like a fan.
+
+13
+00:00:56,483 --> 00:01:00,383
+Thanks to that, the gap between pillars can be 800 m wide.
+
+14
+00:01:00,383 --> 00:01:04,283
+Under it, giant container ships go in and out of Incheon Port.
+
+15
+00:01:04,283 --> 00:01:08,383
+The mud under the sea is deep, so the pillars go all the way down to rock.
+
+16
+00:01:08,383 --> 00:01:12,733
+In 2009, a 21 km road over the sea opened.
+
+17
+00:01:13,733 --> 00:01:17,478
+Yeouido is full of tall buildings. Why is it so flat and straight?
+
+18
+00:01:17,478 --> 00:01:22,375
+Long ago, it was a sand island in the Han River where the royal family kept sheep and goats.
+
+19
+00:01:22,375 --> 00:01:26,696
+In 1916, an airport was built on this flat sand.
+
+20
+00:01:26,696 --> 00:01:30,440
+But every rainy season, the whole island went under water.
+
+21
+00:01:30,440 --> 00:01:35,626
+In 1968, a 7.6 km wall was built around the island in just 110 days.
+
+22
+00:01:35,626 --> 00:01:40,379
+The stones came from Bamseom, the island next to it. They blew it up with dynamite.
+
+23
+00:01:40,379 --> 00:01:46,428
+In 1971, the runway was gone. It became a big square, and now Yeouido Park.
+
+24
+00:01:46,428 --> 00:01:52,333
+Where the 333 m Parc1 stands, planes took off 50 years ago.
+
+25
+00:01:53,000 --> 00:01:57,100
+Why is Seokchon Lake cut in two by a road?
+
+26
+00:01:57,100 --> 00:02:00,900
+This lake was once a part of the Han River, called the Songpa River.
+
+27
+00:02:00,900 --> 00:02:05,200
+Jamsil was an island between the Songpa and Sincheon rivers.
+
+28
+00:02:05,200 --> 00:02:10,250
+In 1971, they blocked the Songpa River with dirt and joined the island to land.
+
+29
+00:02:10,250 --> 00:02:14,450
+The part of the river that was left is now Seokchon Lake.
+
+30
+00:02:14,450 --> 00:02:18,950
+Songpa-daero road goes through the middle, so it became East Lake and West Lake.
+
+31
+00:02:18,950 --> 00:02:24,600
+Then, on rock 38 m underground, the 555 m Lotte World Tower went up.
+
+32
+00:02:24,600 --> 00:02:30,000
+The lake path we walk on was a river about 50 years ago.
+
+33
+00:02:31,000 --> 00:02:35,250
+Jamsugyo, the bridge you always see in rainy season news, is under water again.
+
+34
+00:02:35,250 --> 00:02:38,800
+But this bridge was made to go under water from the start.
+
+35
+00:02:38,800 --> 00:02:43,650
+It sits low, right above the Han River, so when the water rises, it goes under.
+
+36
+00:02:43,650 --> 00:02:48,000
+A high bridge costs more and takes longer, so they built it low, short, and fast.
+
+37
+00:02:48,000 --> 00:02:51,150
+Then they put Banpo Bridge on top as a second floor.
+
+38
+00:02:51,150 --> 00:02:54,600
+So it became a rare two-level bridge.
+
+39
+00:02:54,600 --> 00:02:59,200
+When water rises, cars are stopped first. When it rises more, people too.
+
+40
+00:02:59,200 --> 00:03:04,050
+When the water goes down, they wash off the mud, and cars drive again like nothing happened.
+
+41
+00:03:05,067 --> 00:03:09,667
+Cheonggyecheon flows through the middle of Seoul. Where does its water come from?
+
+42
+00:03:09,667 --> 00:03:14,317
+In fact, it used to be a stream that almost dried up when there was no rain.
+
+43
+00:03:14,317 --> 00:03:18,167
+So most of the water flowing now is brought in by people.
+
+44
+00:03:18,167 --> 00:03:22,567
+They pump water from the Han River, clean it, and send it through underground pipes.
+
+45
+00:03:22,567 --> 00:03:26,217
+Groundwater that comes up in subway stations is added too.
+
+46
+00:03:26,217 --> 00:03:30,367
+Over 100,000 tons of water a day pour out at the top of the stream.
+
+47
+00:03:30,367 --> 00:03:34,867
+It flows over 5 km, through Jungnangcheon, and back into the Han River.
+
+48
+00:03:34,867 --> 00:03:39,367
+So Cheonggyecheon is a path for Han River water to loop through Seoul.
+
+49
+00:03:40,400 --> 00:03:45,000
+On a night of heavy rain, a giant tunnel wakes up under Yangcheon-gu, Seoul.
+
+50
+00:03:45,000 --> 00:03:49,700
+This area floods often. Streets used to go under water whenever it rained.
+
+51
+00:03:49,700 --> 00:03:54,550
+So they dug a tunnel 10 m wide, 40 m underground.
+
+52
+00:03:54,550 --> 00:03:58,600
+It's about 4.7 km long, and much wider than a subway tunnel.
+
+53
+00:03:58,600 --> 00:04:03,150
+Just before rainwater overflows, it pours down a shaft into the tunnel.
+
+54
+00:04:03,150 --> 00:04:07,200
+This tunnel can hold up to 320,000 tons of rainwater.
+
+55
+00:04:07,200 --> 00:04:11,400
+When the rain stops, pumps slowly push the water out to the Han River.
+
+56
+00:04:11,400 --> 00:04:16,600
+While we sleep, a giant water bowl under the city keeps our town safe.
+
+57
+00:04:17,600 --> 00:04:22,000
+Why is a 600-year-old wall next to DDP, which looks like a spaceship?
+
+58
+00:04:22,000 --> 00:04:26,050
+In the Joseon Dynasty, soldiers trained here.
+
+59
+00:04:26,050 --> 00:04:29,800
+In 1925, a sports stadium was built here.
+
+60
+00:04:29,800 --> 00:04:33,700
+Later it became Dongdaemun Stadium, and games were played for over 80 years.
+
+61
+00:04:33,700 --> 00:04:38,300
+When they took down the stadium and dug, the old Seoul city wall came out of the dirt.
+
+62
+00:04:38,300 --> 00:04:43,250
+There was also Igansumun, an arch gate that let water flow under the wall.
+
+63
+00:04:43,250 --> 00:04:48,700
+Digging took 348 days. They brought back 142 m of the wall.
+
+64
+00:04:48,700 --> 00:04:53,000
+That's why an old Joseon wall stands right next to a future-looking building.
+
+65
+00:04:54,033 --> 00:04:58,683
+Off the coast of Jeollabuk-do, a straight road cuts across the sea.
+
+66
+00:04:58,683 --> 00:05:03,633
+It's Saemangeum, 33.9 km long, the longest sea wall in the world.
+
+67
+00:05:03,633 --> 00:05:07,783
+Work started in 1991 and took 19 years to finish.
+
+68
+00:05:07,783 --> 00:05:11,633
+They dumped rocks and dirt into the sea and built the wall bit by bit.
+
+69
+00:05:11,633 --> 00:05:15,483
+The hardest part was closing the last gap.
+
+70
+00:05:15,483 --> 00:05:19,383
+Seawater rushed out through the narrow gap very fast.
+
+71
+00:05:19,383 --> 00:05:23,683
+So they built huge gates in the wall to control the sea level.
+
+72
+00:05:23,683 --> 00:05:28,183
+Inside the wall, new land and a lake appeared, about two-thirds the size of Seoul.
+
+73
+00:05:29,200 --> 00:05:34,150
+Have you heard that a robot comes out when the green dome of the National Assembly opens?
+
+74
+00:05:34,150 --> 00:05:36,950
+Here's the answer first: the dome doesn't open.
+
+75
+00:05:36,950 --> 00:05:40,750
+The dome is 64 m wide and weighs about 1,000 tons.
+
+76
+00:05:40,750 --> 00:05:44,350
+It wasn't in the first plan. They added it while building.
+
+77
+00:05:44,350 --> 00:05:49,750
+It was red copper at first, but it rusted over time and turned green.
+
+78
+00:05:49,750 --> 00:05:53,950
+The 24 pillars around the building stand for the 24 seasons of the year.
+
+79
+00:05:53,950 --> 00:05:58,550
+The dome means many opinions come together into one through debate.
+
+80
+00:05:58,550 --> 00:06:02,450
+It doesn't open, but inside, the country's decisions are made every day.
+
+81
+00:06:03,033 --> 00:06:06,283
+Your checked suitcase at the airport... how does it find your plane?
+
+82
+00:06:06,283 --> 00:06:10,383
+Behind the check-in desk, your bag goes onto a belt under the floor.
+
+83
+00:06:10,383 --> 00:06:15,033
+Under Incheon Airport Terminal 2, the belts are 96 km long.
+
+84
+00:06:15,033 --> 00:06:20,333
+First, an X-ray machine checks the bag for dangerous things.
+
+85
+00:06:20,333 --> 00:06:24,783
+Then your flight number is set, and the bag rushes off at 7 m per second.
+
+86
+00:06:24,783 --> 00:06:30,033
+At every turn, the path changes by itself, so it reaches your plane.
+
+87
+00:06:30,033 --> 00:06:34,483
+It moves 180,000 bags a day. Only 2 in a million miss the plane.
+
+88
+00:06:34,483 --> 00:06:39,633
+While we walk to the gate, our bags race to the plane under our feet.
