@@ -1,0 +1,53 @@
+name: 몰아보기 업로드
+
+on:
+  schedule:
+    # 토요일 저녁 7시쯤(KST)에 queue_long/ 에서 올릴 때가 된 몰아보기(롱폼) 한 편을 유튜브에 올려요.
+    # 쇼츠 업로드(18시대)와 겹치지 않게 1시간 뒤로 잡았어요.
+    - cron: "7 10 * * 6"
+  workflow_dispatch:
+    inputs:
+      item:
+        description: "올릴 편 폴더 이름 (예: L01_underground). 비우면 차례대로, after.txt 날짜도 지켜요"
+        default: ""
+      yt_privacy:
+        description: "public(10분 뒤 공개 예약) / unlisted / private"
+        default: "public"
+      test:
+        description: "시험 업로드 (true면 올린 기록을 남기지 않아요)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency: upload
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - run: git pull -q --ff-only origin main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: 몰아보기 올리기
+        env:
+          LONG_ITEM: ${{ inputs.item }}
+          YT_PRIVACY: ${{ inputs.yt_privacy || 'public' }}
+          TEST_RUN: ${{ inputs.test && 'true' || 'false' }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+        run: python upload_long.py
+      - name: 올린 기록 저장
+        if: always() && !inputs.test
+        run: |
+          git config user.name "upload-bot"
+          git config user.email "upload-bot@users.noreply.github.com"
+          git add posted_long.json 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "몰아보기 업로드 기록" && for i in 1 2 3 4; do git pull -q --rebase origin main && git push && break; sleep $((i*5)); done)
