@@ -17,7 +17,9 @@ on:
     inputs:
       platforms:
         description: "올릴 곳 (쉼표로 구분)"
-        default: "youtube,instagram,threads"
+        # 11/27 메타가 '자동화된 계정 활동'으로 비즈니스 기능을 제한해서 인스타·스레드 자동 업로드는 멈췄어요. 유튜브만 올려요.
+        # 다시 켜려면 여기와 아래 PLATFORMS 두 곳을 "youtube,instagram,threads" 로 바꾸면 돼요.
+        default: "youtube"
       yt_privacy:
         description: "유튜브 공개 범위 (public / unlisted / private)"
         default: "public"
@@ -65,7 +67,7 @@ jobs:
       - name: 다음 편 올리기
         if: steps.gate.outputs.skip != '1'
         env:
-          PLATFORMS: ${{ inputs.platforms || 'youtube,instagram,threads' }}
+          PLATFORMS: ${{ inputs.platforms || 'youtube' }}
           YT_PRIVACY: ${{ inputs.yt_privacy || 'public' }}
           YT_PUBLISH_AT: ${{ inputs.yt_publish_at }}
           YT_PUBLISH_DELAY_MIN: "10"
